@@ -1,8 +1,8 @@
-import br.com.forca.fatec.Forca;
+import br.com.noose.fatec.Noose;
 
 public class Main {
     public static void main(String[] args) {
-        Forca forca = new Forca("carro", 6);
-        forca.jogar();
+        Noose hangedOne = new Noose("paralelepipedo", 5);
+        hangedOne.playGame();
     }
 }
