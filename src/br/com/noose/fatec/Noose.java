@@ -5,6 +5,7 @@ public class Noose {
     private String word;
     private StringBuilder hiddenWord;
     private int remainingAttempts;
+    private boolean isFirstRound = true;
 
     public Noose(String word, int tentativas) {
         this.word = word.toUpperCase();
@@ -84,12 +85,21 @@ public class Noose {
         Scanner scanner = new Scanner(System.in);
 
         while (remainingAttempts > 0 && hiddenWord.indexOf("_") != -1) {
-            renderInterface();
+            if (isFirstRound) {
+                renderInterface();
+                isFirstRound = false;
+            } else {
+                System.out.println("\nLucky Word: " + hiddenWord.toString() + "\n");
+                System.out.println("--------------------------------------------------");
+                System.out.println("Attempts remaining: " + remainingAttempts + "\n");
+                System.out.print("Which letter are you betting on?: ");
+            }
+
             char letter = getUserInput(scanner);
 
-            boolean acertou = playRound(letter);
+            boolean right = playRound(letter);
 
-            if (!acertou) {
+            if (!right) {
                 remainingAttempts--;
                 designNoose();
             }
@@ -105,7 +115,7 @@ public class Noose {
 
     public void renderInterface() {
         System.out.println("--------------------------------------------------");
-        System.out.println("Welcome to the Noose Game!");
+        System.out.println("Welcome to the Noose Game! o-<--<");
         System.out.println("--------------------------------------------------");
         System.out.println("Test your luck and win money! \n" + //
                                 "Get the word right, letter by letter, before you're hanged!\n" + //
@@ -119,6 +129,7 @@ public class Noose {
 
     public char getUserInput(Scanner scanner) {
         String charInput;
+
         do {
             charInput = scanner.nextLine().toUpperCase();
             if (charInput.length() != 1) {
@@ -130,17 +141,22 @@ public class Noose {
     }
 
     public boolean playRound(char letter) {
-        boolean acertou = false;
+        boolean right = false;
 
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) == letter) {
                 hiddenWord.setCharAt(i, letter);
-                acertou = true;
+                right = true;
                 System.out.println("\nCongrats, my friend! \nType another letter!");
             }
         }
 
-        return acertou;
+        if (!right) {
+            System.out.println("\nYou typed '" + letter + "' but the word doesn't have this letter.");
+            System.out.println("\nSorry, try again!");
+        }
+
+        return right;
     }
 }
 
@@ -166,17 +182,17 @@ public class Noose {
     //         }
 
     //         char letter = charInput.charAt(0);
-    //         boolean acertou = false;
+    //         boolean right = false;
 
     //         for (int i = 0; i < word.length(); i++) {
     //             if (word.charAt(i) == letter) {
     //                 hiddenWord.setCharAt(i, letter);
-    //                 acertou = true;
+    //                 right = true;
     //                 System.out.println("\nCongrats, my friend! \nType another letter!");
     //             }
     //         }
 
-    //         if (!acertou) {
+    //         if (!right) {
     //             remainingAttempts--;
     //             designNoose();
     //         }
