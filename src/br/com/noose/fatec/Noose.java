@@ -7,9 +7,9 @@ public class Noose {
     private int remainingAttempts;
     private boolean isFirstRound = true;
 
-    public Noose(String word, int tentativas) {
+    public Noose(String word, int attempts) {
         this.word = word.toUpperCase();
-        this.remainingAttempts = tentativas;
+        this.remainingAttempts = attempts;
         this.hiddenWord = new StringBuilder(word.replaceAll(".", "_"));
     }
 
@@ -85,15 +85,7 @@ public class Noose {
         Scanner scanner = new Scanner(System.in);
 
         while (remainingAttempts > 0 && hiddenWord.indexOf("_") != -1) {
-            if (isFirstRound) {
-                renderInterface();
-                isFirstRound = false;
-            } else {
-                System.out.println("\nLucky Word: " + hiddenWord.toString() + "\n");
-                System.out.println("--------------------------------------------------");
-                System.out.println("Attempts remaining: " + remainingAttempts + "\n");
-                System.out.print("Which letter are you betting on?: ");
-            }
+            renderInterface();
 
             char letter = getUserInput(scanner);
 
@@ -107,24 +99,35 @@ public class Noose {
         scanner.close();
 
         if (remainingAttempts > 0) {
-            System.out.println("Parabéns, você ganhou! A palavra era: " + word);
+            System.out.println("\n-------------------- You Win! ------------------------------");
+            System.out.println("\nCongratulations! The word has: " + word);
         } else {
-            System.out.println("Você perdeu! A palavra era: " + word);
+            System.out.println("\n-------------------- You Lost! ------------------------------");
+            System.out.println("\nYou lost! The word has: " + word);
         }
     }
 
     public void renderInterface() {
-        System.out.println("--------------------------------------------------");
-        System.out.println("Welcome to the Noose Game! o-<--<");
-        System.out.println("--------------------------------------------------");
-        System.out.println("Test your luck and win money! \n" + //
-                                "Get the word right, letter by letter, before you're hanged!\n" + //
-                                "Be careful, you only have 5 chances....");
-        System.out.println("--------------------------------------------------");
-        System.out.println("\nLucky Word: " + hiddenWord.toString() + "\n");
-        System.out.println("--------------------------------------------------");
-        System.out.println("Attempts remaining: " + remainingAttempts + "\n");
-        System.out.print("Which letter are you betting on?: ");
+        if (isFirstRound) {
+            System.out.println("--------------------------------------------------");
+            System.out.println("---------- Welcome to the Noose Game! ------------");
+            System.out.println("--------------------------------------------------");
+            System.out.println("Test your luck and win money! \n" +
+                                    "Get the word right, letter by letter, before you're hanged!\n" +
+                                    "Be careful, you only have 5 chances....");
+            System.out.println("--------------------------------------------------");
+            System.out.println("\nLucky Word: " + hiddenWord.toString() + "\n");
+            System.out.println("--------------------------------------------------");
+            System.out.println("Attempts remaining: " + remainingAttempts + "\n");
+            System.out.print("Which letter are you betting on?: ");
+
+            isFirstRound = false;
+        } else {
+            System.out.println("\nLucky Word: " + hiddenWord.toString() + "\n");
+            System.out.println("--------------------------------------------------");
+            System.out.println("Attempts remaining: " + remainingAttempts + "\n");
+            System.out.print("Which letter are you betting on?: ");
+        }
     }
 
     public char getUserInput(Scanner scanner) {
@@ -147,7 +150,6 @@ public class Noose {
             if (word.charAt(i) == letter) {
                 hiddenWord.setCharAt(i, letter);
                 right = true;
-                System.out.println("\nCongrats, my friend! \nType another letter!");
             }
         }
 
@@ -156,52 +158,10 @@ public class Noose {
             System.out.println("\nSorry, try again!");
         }
 
+        if (right) {
+            System.out.println("\nCongratulations! The word has the letter '" + letter + "'.");
+        }
+
         return right;
     }
 }
-
-
-    // public void playGame() {
-    //     Scanner scanner = new Scanner(System.in);
-    //     while (remainingAttempts > 0 && hiddenWord.indexOf("_") != -1) {
-    //         System.out.println("--------------------------------------------------");
-    //         System.out.println("Welcome to the Noose Game!");
-    //         System.out.println("--------------------------------------------------");
-    //         System.out.println("Test your luck and win money! \n" + //
-    //                             "Get the word right, letter by letter, before you're hanged!\n" + //
-    //                             "Be careful, you only have 5 chances....");
-    //         System.out.println("--------------------------------------------------");
-    //         System.out.println("\nLucky Word: " + hiddenWord.toString() + "\n");
-    //         System.out.println("--------------------------------------------------");
-    //         System.out.println("Attempts remaining: " + remainingAttempts + "\n");
-    //         System.out.print("Which letter are you betting on?: ");
-    //         String charInput = scanner.nextLine().toUpperCase();
-    //         if (charInput.length() != 1) {
-    //             System.out.println("Please type only one letter...");
-    //             continue;
-    //         }
-
-    //         char letter = charInput.charAt(0);
-    //         boolean right = false;
-
-    //         for (int i = 0; i < word.length(); i++) {
-    //             if (word.charAt(i) == letter) {
-    //                 hiddenWord.setCharAt(i, letter);
-    //                 right = true;
-    //                 System.out.println("\nCongrats, my friend! \nType another letter!");
-    //             }
-    //         }
-
-    //         if (!right) {
-    //             remainingAttempts--;
-    //             designNoose();
-    //         }
-    //     }
-    //     scanner.close();
-
-    //     if (remainingAttempts > 0) {
-    //         System.out.println("Parabéns, você ganhou! A palavra era: " + word);
-    //     } else {
-    //         System.out.println("Você perdeu! A palavra era: " + word);
-    //     }
-    // }
